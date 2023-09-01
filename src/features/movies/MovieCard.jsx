@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-function MovieCard({title, overview, poster }) {
+function MovieCard({ id, title, overview, poster }) {
   return (
     <Card borderRadius={30} bg={"white"} shadow="2xl">
       <CardHeader pb={0}>
@@ -23,13 +23,15 @@ function MovieCard({title, overview, poster }) {
         />
       </CardHeader>
       <CardBody minH={130}>
-        <Heading size="sm" pb={2}>
+        <Heading size="md" pb={2}>
           {title}
         </Heading>
-        <Text color="black.700">{overview.substring(0, 50) + "..."}</Text>
+        <Text fontSize="xl" color="black.700">
+          {overview.substring(0, 50) + "..."}
+        </Text>
       </CardBody>
       <CardFooter pt={2}>
-        <Link to={"/movies/${id}"} style={{ width: "100%" }}>
+        <Link to={`/movies/${id}`} style={{ width: "100%" }}>
           <Button w="100%" color="white" m="auto" bg="green.300">
             View Joke & More.
           </Button>
