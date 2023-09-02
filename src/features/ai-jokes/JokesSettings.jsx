@@ -20,21 +20,25 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ruleAdded, ruleRemoved } from "./aiJokesSlice";
 
 function JokesSettings() {
-  const [form, setForm] = useState({ name: "", description: "" });
-  const [rules, setRules] = useState([
-    {
-      name: "Joke Type",
-      description: "Programmer",
-    },
-  ]);
+  const initialForm = { name: "", description: "" };
+  const [form, setForm] = useState(initialForm);
+  const rules = useSelector((state) => state.aiJokes.rules);
+  const dispatch = useDispatch();
 
-  const handleRuleRemove = () => {};
+  const handleRuleRemove = (ruleName) => {
+    dispatch(ruleRemoved(ruleName));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setRules([...rules, form]);
+    dispatch(ruleAdded(form));
+    setForm(initialForm);
   };
+
   return (
     <Popover placement="bottom-start">
       <PopoverTrigger>
@@ -77,27 +81,25 @@ function JokesSettings() {
             <form onSubmit={handleSubmit}>
               <FormControl isRequired>
                 <InputGroup size="sm" mb={2}>
-                  <InputLeftAddon
+                  <InputLeftAddon>Name</InputLeftAddon>
+                  <Input
+                    type="text"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  >
-                    Name
-                  </InputLeftAddon>
-                  <Input type="text" />
+                  />
                 </InputGroup>
               </FormControl>
 
               <FormControl isRequired>
                 <InputGroup size="sm" mb={2}>
-                  <InputLeftAddon
+                  <InputLeftAddon>Description</InputLeftAddon>
+                  <Input
+                    type="text"
                     value={form.description}
                     onChange={(e) =>
                       setForm({ ...form, description: e.target.value })
                     }
-                  >
-                    Description
-                  </InputLeftAddon>
-                  <Input type="text" />
+                  />
                 </InputGroup>
               </FormControl>
 
