@@ -1,6 +1,6 @@
 import { Badge, Button, Flex, Text, useToast } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchJokes, selectJokeStatus, selectedJokeById } from "./aiJokesSlice";
+import { fetchJoke, selectJokeStatus, selectedJokeById } from "./aiJokesSlice";
 
 function JokeGenerator({ movieId, movieTitle, movieDescription }) {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ function JokeGenerator({ movieId, movieTitle, movieDescription }) {
   const handleGenerateJoke = async () => {
     try {
       await dispatch(
-        fetchJokes({ movieId, movieTitle, movieDescription })
+        fetchJoke({ movieId, movieTitle, movieDescription })
       ).unwrap();
     } catch (err) {
       toast({

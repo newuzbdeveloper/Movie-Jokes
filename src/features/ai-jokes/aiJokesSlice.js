@@ -16,15 +16,30 @@ const initialState = {
   },
 };
 
-export const fetchJokes = createAsyncThunk(
-  "aiJokes/fetchJokes",
-  async ({ movieId, movieTitle, movieDescription }) => {
+export const fetchJoke = createAsyncThunk(
+  "aiJokes/fetchJoke",
+  async ({ movieId, movieTitle, movieDescription }, thunkApi) => {
+    const state = thunkApi.getState();
+    const joke = selectedJokeById(state, movieId);
+    const rules = selectJokeRules(state);
+    const rulesParams = rules.reduce(
+      (acc, rule) => `${acc}${rule.name}: ${rule.description}\n`,
+      ""
+    );
+
     const messages = [
       {
         role: "user",
-        content: `Movie Title: ${movieTitle}, Movie Description: ${movieDescription}, Joke: `,
+        content: `Movie Title: ${movieTitle}, Movie Descreption: ${movieDescription}, ${rulesParams} Joke:`,
       },
     ];
+
+    if (joke) {
+      messages.unshift({
+        role: "user",
+        content: `Don't use joke: ${joke.joke}`,
+      });
+    }
 
     const response = await axios.post(
       OPENAI_API_URL,
@@ -38,8 +53,8 @@ export const fetchJokes = createAsyncThunk(
         },
       }
     );
-    console.log(response);
-    return { movieId, joke: "Funny Joke" };
+
+    return { movieId, joke: response.data.choices[0].message.content };
   }
 );
 
@@ -64,13 +79,13 @@ const aiJokesSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchJokes.pending, (state) => {
-        state.status = "loading";
+      .addCase(fetchJoke.pending, (state) => {
+        state.jokes.status = "loading";
       })
-      .addCase(fetchJokes.fulfilled, (state, action) => {
-        state.status = "succeeded";
+      .addCase(fetchJoke.fulfilled, (state, action) => {
+        state.jokes.status = "succeeded";
         const jokeIndex = state.jokes.jokes.findIndex(
-          (joke) => joke.movieId === action.payload.joke.movieId
+          (joke) => joke.movieId === action.payload.movieId
         );
         if (jokeIndex > -1) {
           state.jokes.jokes[jokeIndex] = action.payload;
@@ -78,9 +93,9 @@ const aiJokesSlice = createSlice({
           state.jokes.jokes.push(action.payload);
         }
       })
-      .addCase(fetchJokes.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
+      .addCase(fetchJoke.rejected, (state, action) => {
+        state.jokes.status = "failed";
+        state.jokes.error = action.error.message;
       });
   },
 });
