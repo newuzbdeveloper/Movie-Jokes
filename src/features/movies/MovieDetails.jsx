@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Card,
   CardBody,
@@ -46,14 +47,20 @@ function MovieDetails() {
         <Stack>
           <CardBody>
             <Heading size="lg">{movie.title}</Heading>
-
+            <Text py={2} color="gray.600">
+              Rating: <Badge colorScheme="green">{movie?.vote_average}</Badge>
+            </Text>
             <Text fontSize="2xl" py="2">
               {movie.overview}
             </Text>
           </CardBody>
 
           <CardFooter>
-            <JokeGenerator movieId={movie.id} movieTitle={movie.title} movieDescription={movie.overview}/>
+            <JokeGenerator
+              movieId={movie.id}
+              movieTitle={movie.title}
+              movieDescription={movie.overview}
+            />
           </CardFooter>
         </Stack>
       </Card>
