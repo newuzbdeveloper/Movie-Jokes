@@ -16,11 +16,11 @@ import { Link, useParams } from "react-router-dom";
 import { MOVIEDB_IMAGES_URL } from "src/common/constants";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import JokeGenerator from "src/features/ai-jokes/JokeGenerator";
-import { useGetMoviesByIdQuery } from "./movieSlice";
+import { useGetMoviesByIdQuery } from "./moviesApi";
 
 function MovieDetails() {
   const { movieId } = useParams();
-  const { data, isLoading, isSuccess, error, isError } =
+  const { data, isError, error, isLoading, isSuccess } =
     useGetMoviesByIdQuery(movieId);
   let content;
   if (isSuccess) {
@@ -65,12 +65,14 @@ function MovieDetails() {
       </Flex>
     );
   } else if (isError) {
-    <Flex alignItems="center" bg="red" justifyContent="center" minH="100vh">
-      {error}
-    </Flex>;
+    content = (
+      <Flex alignItems="center" justifyContent="center">
+        {error}
+      </Flex>
+    );
   }
   return (
-    <Box>
+    <Box minH="100vh" minW="100%" py={8}>
       <Link to={"/"}>
         <IconButton
           mb={4}

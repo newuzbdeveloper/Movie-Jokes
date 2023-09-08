@@ -1,11 +1,12 @@
-import { configureStore, MiddlewareArray } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import aiJokesReducer from "src/features/ai-jokes/aiJokesSlice";
-import { moviesAPI } from "src/features/movies/movieSlice";
+import { moviesApi } from "src/features/movies/moviesApi";
 
 export const store = configureStore({
   reducer: {
-    [moviesAPI.reducerPath]: moviesAPI.reducer,
+    [moviesApi.reducerPath]: moviesApi.reducer,
     aiJokes: aiJokesReducer,
   },
-  middleware: new MiddlewareArray().concat(moviesAPI.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(moviesApi.middleware),
 });

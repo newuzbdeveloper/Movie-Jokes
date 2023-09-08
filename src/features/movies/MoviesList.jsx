@@ -1,10 +1,10 @@
 import MovieCard from "./MovieCard";
 import { Flex, Heading, SimpleGrid, Spinner } from "@chakra-ui/react";
 import { MOVIEDB_IMAGES_URL } from "src/common/constants";
-import { useGetMoviesQuery } from "./movieSlice";
+import { useGetMoviesQuery } from "./moviesApi";
 
 function MoviesList() {
-  const { data, isLoading, isSuccess, error, isError } = useGetMoviesQuery;
+  const { data, isError, error, isLoading, isSuccess } = useGetMoviesQuery();
   let content;
   if (isSuccess) {
     content = (
@@ -27,9 +27,11 @@ function MoviesList() {
       </Flex>
     );
   } else if (isError) {
-    <Flex alignItems="center" bg="red" justifyContent="center" minH="100vh">
-      {error}
-    </Flex>;
+    content = (
+      <Flex alignItems="center" bg="red" justifyContent="center" minH="100vh">
+        {error}
+      </Flex>
+    );
   }
   return (
     <>
