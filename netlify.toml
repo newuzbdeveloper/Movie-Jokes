@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "*"
+  to = "https://api.themoviedb.org/3/tv/popular/:splat"
+  status = 200
