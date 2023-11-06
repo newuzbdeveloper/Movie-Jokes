@@ -3,5 +3,5 @@
   to = "https://api.themoviedb.org/3/tv/popular/:splat"
   status = 200
   
-  [build.environment]
-  MY_API_KEY = "VITE_MOVIEDB_API_KEY"
+[build.environment]
+MY_API_KEY = "VITE_MOVIEDB_API_KEY"
