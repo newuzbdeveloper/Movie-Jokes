@@ -18,12 +18,12 @@ export const moviesApi = createApi({
       query: () => "/movie/popular",
       transformResponse: (response) => response.results,
       transformErrorResponse: (error) =>
-        error?.data.status_message ?? "Somesthing went wrong!",
+        error?.data.status_message ?? "Something went wrong!",
     }),
     getMoviesById: builder.query({
       query: (movieId) => `/movie/${movieId}`,
       transformErrorResponse: (error) =>
-        error?.data.status_message ?? "Somesthing went wrong!",
+        error?.data.status_message ?? "Something went wrong!",
     }),
   }),
 });
